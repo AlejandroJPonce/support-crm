@@ -9,6 +9,7 @@
   background-color: #fff;
   padding: 40px 30px;
   border-radius: 15px;
+  min-width: 400px;
 }
 
 .box-title {
@@ -22,6 +23,7 @@
 
 input {
   border: none;
+  color: #222;
 }
 
 .form-input {
@@ -31,6 +33,7 @@ input {
   border-color: none;
   background: #fff;
   border-bottom: 2px solid lightgrey;
+  width: 100%;
 }
 
 .form-route {
