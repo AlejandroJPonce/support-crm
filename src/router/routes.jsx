@@ -1,7 +1,7 @@
 
 import SignIn from '../views/SignIn'
 import SignUp from '../views/SignUp'
-import SupportChat from '../views/SupportChat'
+import Chats from '../views/Chats'
 
 
 export const routes = [
@@ -15,6 +15,6 @@ export const routes = [
   },
   {
     path: '/chats',
-    element: <SupportChat />
+    element: <Chats />
   }
 ]

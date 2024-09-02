@@ -1,0 +1,34 @@
+.chats-layout {
+    display: grid;
+    grid-template-areas: 
+    "aside chat chat"
+    ;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 1fr auto;
+}
+
+#aside {
+    background-color: #2110596e;
+}
+
+.list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.list-of-contacts {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    border-right: 2px solid white;
+    border-radius: 20px 0px 0px 20px;
+}
+
+.list-of-contacts-title {
+    padding: 15px;
+}
