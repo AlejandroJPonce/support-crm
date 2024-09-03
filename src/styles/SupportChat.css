@@ -94,3 +94,11 @@
     border-radius: 20px;
     padding: 12px 20px;
 }
+
+.crm-status-is-online {
+    color: aquamarine;
+}
+
+.crm-status-is-offline {
+    color: crimson;
+}

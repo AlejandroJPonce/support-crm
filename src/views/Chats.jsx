@@ -1,35 +1,45 @@
 import SupportChat from "./SupportChat";
 import Contact from "./Contact";
 import "../styles/Chats.css";
+import { useState } from "react";
 
-const contacts = [
-  {
-    id: 1,
-    name: 'Alejandro',
-    lastName: 'Ponce',
-    imageUrl: 'https://unavatar.io/microlink/microlink.io',
-    status: 'Online'
-  },
-  {
-    id: 2,
-    name: 'David',
-    lastName: 'Pena',
-    imageUrl: 'https://unavatar.io/youtube/casey',
-    status: 'Offline'
-  },
-  {
-    id: 3,
-    name: 'Jean',
-    lastName: 'Ospino',
-    imageUrl: 'https://unavatar.io/twitter/kikobeats',
-    status: 'Offline'
-  }
-]
+export default function Chats() {
 
-export default function Chats({ listOfContacts, children }) {
+  const contacts = [
+    {
+      id: 1,
+      name: "Alejandro",
+      lastName: "Ponce",
+      imageUrl: "https://unavatar.io/microlink/microlink.io",
+      status: "Online",
+    },
+    {
+      id: 2,
+      name: "David",
+      lastName: "Pena",
+      imageUrl: "https://unavatar.io/youtube/casey",
+      status: "Offline",
+    },
+    {
+      id: 3,
+      name: "Jean",
+      lastName: "Ospino",
+      imageUrl: "https://unavatar.io/twitter/kikobeats",
+      status: "Online",
+    },
+  ];
 
-  const handleClick = (name) => {
-    console.log(`hola ${name}`);
+  var contactInformation = {
+    id: 0,
+    name: "empty",
+    lastName: "",
+    status: "Offline",
+    imageUrl: "https://unavatar.io/substack/bankless",
+  };
+  const [userInfo, setUserInfo] = useState(contactInformation);
+
+  function getUserData (userInformation) {
+    setUserInfo(userInformation)
   }
 
   return (
@@ -42,15 +52,13 @@ export default function Chats({ listOfContacts, children }) {
             </div>
           </div>
           <div className="list">
-            {
-              contacts.map(element => (
-                <Contact key={element.id} details={element} />
-              ))
-            }
+            {contacts.map((element) => (
+              <Contact key={element.id} details={element} handleSetUser={getUserData} />
+            ))}
           </div>
         </div>
         <div id="chat" className="chat-section">
-          <SupportChat />
+          <SupportChat userInfo={userInfo} />
         </div>
       </div>
     </>

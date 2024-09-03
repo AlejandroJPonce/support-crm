@@ -1,16 +1,9 @@
 import "../styles/SupportChat.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-export default function SupportChat() {
+export default function SupportChat({userInfo}) {
 
-  var contactInformation = {
-    id: 0,
-    name: 'empty',
-    lastName: '',
-    status: 'Offline',
-    imageUrl: 'https://unavatar.io/substack/bankless'
-  }
-  const [ userInfo, setUserInfo ] = useState(contactInformation)
+  const statusClassName = userInfo.status === 'Online' ? 'crm-status-is-online' : 'crm-status-is-offline'
 
   return (
     <>
@@ -25,7 +18,7 @@ export default function SupportChat() {
               />
               <div className="crm-chat-contact-info">
                 <strong> {userInfo.name} {userInfo.lastName} </strong>
-                <span> {userInfo.status} </span>
+                <span className={statusClassName}> {userInfo.status} </span>
               </div>
             </div>
             <div className="crm-chat-options">

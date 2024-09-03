@@ -35,3 +35,11 @@
     justify-content: center;
     line-height: 19px;
 }
+
+.crm-status-is-online {
+    color: aquamarine;
+}
+
+.crm-status-is-offline {
+    color: crimson;
+}

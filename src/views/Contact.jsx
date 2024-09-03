@@ -1,19 +1,22 @@
 import "../styles/Contact.css";
+import { useState } from "react"
 
-export default function Contact ({ details }) {
+export default function Contact ({ details, handleSetUser }) {
+
+  const [userInfo, _ ] = useState(details)
 
   function handleSaveContactInfo () {
-    console.log(details);
-
     const toSave = {
-      name: details.name,
-      lastName: details.lastName,
-      status: details.status,
-      imageUrl: details.imageUrl
+      name: userInfo.name,
+      lastName: userInfo.lastName,
+      status: userInfo.status,
+      imageUrl: userInfo.imageUrl
     }
-
     localStorage.setItem('contactSelected', JSON.stringify(toSave))
+    handleSetUser(userInfo)
   }
+
+  const statusClassName = userInfo.status === 'Online' ? 'crm-status-is-online' : 'crm-status-is-offline'
 
   return (
     <>
@@ -28,7 +31,7 @@ export default function Contact ({ details }) {
             <div className="list-of-contacts-item-info">
               <strong> {details.name || ''} {details.lastName || ''} </strong>
               <br />
-              <span> {details.status || ''} </span>
+              <span className={statusClassName}> {details.status || ''} </span>
             </div>
           </div>
         </div>
