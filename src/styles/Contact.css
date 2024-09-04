@@ -1,21 +1,21 @@
 .list-of-contacts-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     width: 100%;
-    padding: 10px 0px;
+    border-radius: 15px;
+    transition: 0.5s ease background-color;
+
 }
 
 .list-of-contacts-item:hover {
-    background-color: #2110594f;
+    background-color: #7c7c7c20;
     cursor: pointer;
 }
 
-.list-of-contacts-item-header {
+.list-of-contacts-item-header-1 {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 12px;
+    padding: 10px;
+    gap: 15px;
 }
 
 .list-of-contacts-item-button:hover {
@@ -25,6 +25,7 @@
 .list-of-contacts-item-avatar {
     width: 40px;
     height: 40px;
+    border-radius: 10px;
 }
 
 .list-of-contacts-info {
@@ -33,4 +34,12 @@
     align-items: flex-start;
     justify-content: center;
     line-height: 19px;
+}
+
+.crm-status-is-online {
+    color: aquamarine;
+}
+
+.crm-status-is-offline {
+    color: crimson;
 }
