@@ -1,8 +1,9 @@
 import "../styles/SupportChat.css";
 
+// eslint-disable-next-line react/prop-types
 export default function SupportChat({userInfo}) {
 
-  const statusClassName = userInfo.status === 'Online' ? 'crm-status-is-online' : 'crm-status-is-offline'
+  const statusClassName = userInfo?.status === 'Online' ? 'crm-status-is-online' : 'crm-status-is-offline'
 
   return (
     <>
@@ -11,13 +12,13 @@ export default function SupportChat({userInfo}) {
           <div className="crm-chat-header-elements">
             <div className="crm-chat-contact">
               <img
-                src={userInfo.imageUrl}
+                src={userInfo?.imageUrl}
                 alt="chatProfile"
                 className="crm-chat-contact-avatar"
               />
               <div className="crm-chat-contact-info">
-                <strong> {userInfo.name} {userInfo.lastName} </strong>
-                <span className={statusClassName}> {userInfo.status} </span>
+                <strong> {userInfo?.name} {userInfo?.lastName} </strong>
+                <span className={statusClassName}> {userInfo?.status} </span>
               </div>
             </div>
             <div className="crm-chat-options">

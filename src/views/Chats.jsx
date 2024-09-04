@@ -1,27 +1,40 @@
 import SupportChat from "./SupportChat";
 import Contact from "./Contact";
 import "../styles/Chats.css";
-import { useState } from "react";
-import { Users } from "../database/users";
+import { useEffect, useState } from "react";
+import { useRealTimeDatabase } from "../database/useRealTimeDatabase";
 
-const clients = new Users()
 
-const users = clients.getData()
 
 export default function Chats() {
 
-  var contactInformation = {
-    id: 0,
-    name: "empty",
-    lastName: "",
-    status: "Offline",
-    imageUrl: "https://unavatar.io/substack/bankless",
-  };
+  const db = useRealTimeDatabase()
+  const collection = db('users')
+
+  const [usersList, setUsersList] = useState([])
   const [userInfo, setUserInfo] = useState(contactInformation);
+
+  var contactInformation = {
+    imageUrl:"https://unavatar.io/microlink/microlink.io",
+    lastName:"Ponce",
+    name:"Alejandro",
+    role:"ADMIN",
+    status:"Online",
+  };
+
+  const getData = async () => {
+    const elements = await collection.getAllNodes()
+    setUsersList(elements)
+    getUserData(elements[0])
+  }
 
   function getUserData (userInformation) {
     setUserInfo(userInformation)
   }
+
+  useEffect(() => {
+    getData()
+  }, []) 
 
   return (
     <>
@@ -29,13 +42,15 @@ export default function Chats() {
         <div id="aside" className="list-of-contacts">
           <div className="list-of-contacts-header">
             <div className="list-of-contacts-header-title">
-              <h2>Chats</h2>
+              <h2 >Chats</h2>
             </div>
           </div>
           <div className="list">
-            {users.map((element) => (
-              <Contact key={element.id} details={element} handleSetUser={getUserData} />
-            ))}
+            {
+              usersList.map((element) => (
+                <Contact key={element.id} details={element} handleSetUser={getUserData} />
+              ))
+            }
           </div>
         </div>
         <div id="chat" className="chat-section">
