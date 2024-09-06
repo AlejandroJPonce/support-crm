@@ -8,19 +8,21 @@ export const useRealTimeDatabase = () => {
       let users = []
       onValue(queryRef, (snapshot) => {
         if (snapshot.exists()) {
-
           snapshot.forEach((isChild) => {
             users.push({
               id: isChild.key,
               ...isChild.val()
             })
           })
-
         } else {
           return
         }
       });
       return users
+    }
+
+    const listenMessages = () => {
+      
     }
 
     return {

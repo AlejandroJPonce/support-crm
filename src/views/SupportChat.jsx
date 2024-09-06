@@ -1,9 +1,66 @@
 import "../styles/SupportChat.css";
+import Messages from "./Messages";
+import { useState } from "react";
 
-// eslint-disable-next-line react/prop-types
-export default function SupportChat({userInfo}) {
+export default function SupportChat({ userInfo }) {
 
-  const statusClassName = userInfo?.status === 'Online' ? 'crm-status-is-online' : 'crm-status-is-offline'
+
+  const [ inputMessage, setInputMessage ] = useState('')
+
+  const initList = [
+    { 
+      messageId: 1,
+      uid: 1,
+      name: 'Alejandro',
+      lastName: 'Ponce',
+      el: 'Hola mundo primer mensaje importado'
+    },
+    {
+      messageId: 2,
+      uid: 2,
+      name: 'David',
+      lastName: 'Pena',
+      el: 'Hola mundo segundo mensaje importado Hola mundo segundo mensaje importado Hola mundo segundo mensaje importado'
+    },
+
+    {
+      messageId: 3,
+      uid: 1,
+      name: 'Alejandro',
+      lastName: 'Ponce',
+      el: 'Hola mundo tercer mensaje importado'
+    },
+    {
+      messageId: 4,
+      uid: 1,
+      name: 'Alejandro',
+      lastName: 'Ponce',
+      el: 'Hola mundo tercer mensaje importado'
+    },
+  ]
+
+  const [ list, setList ] = useState(initList)  
+
+  const statusClassName =
+    userInfo?.status === "Online"
+      ? "crm-status-is-online"
+      : "crm-status-is-offline";
+
+  function send_message () {
+
+    const arr = list
+
+    const config = {
+      messageId: 10,
+      uid: 1,
+      name: 'Alejandro',
+      lastName: 'Ponce',
+      el: inputMessage
+    }
+
+    setList(arr)
+
+  }
 
   return (
     <>
@@ -17,7 +74,10 @@ export default function SupportChat({userInfo}) {
                 className="crm-chat-contact-avatar"
               />
               <div className="crm-chat-contact-info">
-                <strong> {userInfo?.name} {userInfo?.lastName} </strong>
+                <strong>
+                  {" "}
+                  {userInfo?.name} {userInfo?.lastName}{" "}
+                </strong>
                 <span className={statusClassName}> {userInfo?.status} </span>
               </div>
             </div>
@@ -40,7 +100,13 @@ export default function SupportChat({userInfo}) {
           </div>
         </div>
 
-        <div className="crm-chat-body"></div>
+        <div className="crm-chat-body">
+            {
+              list.map((element) => (
+                <Messages key={element.messageId} data={element} />
+              ))
+            }
+        </div>
 
         <div className="crm-chat-footer">
           <div className="crm-chat-footer-elements">
@@ -49,8 +115,11 @@ export default function SupportChat({userInfo}) {
               name=""
               id=""
               className="crm-chat-message-input"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              placeholder="Mensaje..."
             />
-            <button className="icon-button">
+            <button className="icon-button" onClick={send_message}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

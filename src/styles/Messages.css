@@ -1,0 +1,27 @@
+.message-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.message-item {
+    max-width: 60%;
+    color: #efefef !important;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+.message-item-primary {
+    background-color: #538571;
+}
+
+.message-item-secondary {
+    background-color: #575757;
+}
+
+.message-box-left {
+    justify-content: left;
+}
+.message-box-right {
+    justify-content: right;
+}

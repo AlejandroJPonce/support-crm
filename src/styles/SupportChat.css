@@ -51,7 +51,7 @@
 }
 
 .crm-chat-body {
-    width: 500px;
+    width: 600px;
     height: 75%;
     background-image: url('../../public/backgrounds/whatsapp-bg.jpg');
     background-position: center;
@@ -59,8 +59,12 @@
     background-clip: border-box;
     background-size: cover;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    color: black;
+    padding: 30px;
+    gap: 10px;
 }
 .crm-chat-footer {
     width: 100%;

@@ -3,7 +3,7 @@
     grid-template-areas: 
     "aside chat chat"
     ;
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 270px 1fr;
     grid-template-rows: 1fr auto;
 }
 

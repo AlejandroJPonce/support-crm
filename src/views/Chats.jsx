@@ -4,8 +4,6 @@ import "../styles/Chats.css";
 import { useEffect, useState } from "react";
 import { useRealTimeDatabase } from "../database/useRealTimeDatabase";
 
-
-
 export default function Chats() {
 
   const db = useRealTimeDatabase()
