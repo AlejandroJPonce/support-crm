@@ -1,22 +1,33 @@
 import { useState } from "react";
+import "../styles/SignIn.css";
 import "../styles/SignUp.css";
 import { doRegisterUser } from "../database/useFirebaseAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const buttonInfo = !loading ? <div>Registrar</div> : <div className="loader"></div>
+  const buttonClasses = !loading ? (
+    <div>Registrar</div>
+  ) : (
+    <div className="loader"></div>
+  );
 
-  function handleRegister() {
+  async function handleRegister() {
     try {
       setLoading(true);
-      doRegisterUser(name, lastName, email, password);
+      const response = await doRegisterUser(name, lastName, email, password);
+      if (response) {
+        navigate("/");
+      }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -25,7 +36,7 @@ export default function SignUp() {
   return (
     <>
       <div className="signin-form-box">
-        <span className="box-title">Ingresar</span>
+        <span className="box-title">Registrarme</span>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -58,9 +69,7 @@ export default function SignUp() {
           Ir a iniciar sesion
         </a>
         <button className="login-button" onClick={handleRegister}>
-          {
-            buttonInfo
-          }
+          {buttonClasses}
         </button>
       </div>
     </>

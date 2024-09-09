@@ -1,18 +1,34 @@
 import "../styles/SignIn.css";
+import "../styles/SignUp.css";
 import { useState } from "react";
 import { doLoggedIn } from "../database/useFirebaseAuth";
 import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const buttonClasses = !loading ? (
+    <div>Iniciar Sesión</div>
+  ) : (
+    <div className="loader"></div>
+  );
 
   const handleLogin = async () => {
-    await doLoggedIn(email, password);
-    navigate("/chats");
+    try {
+      setLoading(true);
+      const response = await doLoggedIn(email, password);
+      if (response) {
+        navigate("/chats");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -37,7 +53,7 @@ export default function SignIn() {
           Aun no haces parte del equipo ?
         </a>
         <button className="login-button" onClick={handleLogin}>
-          Iniciar Sesion
+          {buttonClasses}
         </button>
       </div>
     </>
