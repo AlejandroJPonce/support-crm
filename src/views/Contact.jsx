@@ -1,26 +1,30 @@
 import "../styles/Contact.css";
 import { useState } from "react"
 
-export default function Contact ({ details, handleSetUser }) {
+export default function Contact ({ details, handleSetUser, handleSelectThisContact }) {
 
-  const [userInfo, _ ] = useState(details)
+  const [userInfo, setUserInfo] = useState(details)
 
   function handleSaveContactInfo () {
-    const toSave = {
-      name: userInfo.name,
-      lastName: userInfo.lastName,
-      status: userInfo.status,
-      imageUrl: userInfo.imageUrl
-    }
-    localStorage.setItem('contactSelected', JSON.stringify(toSave))
+
+    setUserInfo(userInfo)
+
     handleSetUser(userInfo)
+    handleSelectThisContact()
+    setUserInfo({
+      ...userInfo,
+      isSelected: true
+    })
   }
 
+  //custom classes with validations
   const statusClassName = userInfo.status === 'Online' ? 'crm-status-is-online' : 'crm-status-is-offline'
+  const list_item_class = userInfo.isSelected ? "list-of-contacts-item is-selected-item" : "list-of-contacts-item"
+
 
   return (
     <>
-      <div className="list-of-contacts-item" onClick={handleSaveContactInfo}>
+      <div className={list_item_class} onClick={handleSaveContactInfo}>
         <div className="list-of-contacts-item-header">
           <div className="list-of-contacts-item-header-1">
             <img

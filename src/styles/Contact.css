@@ -10,6 +10,10 @@
     cursor: pointer;
 }
 
+.is-selected-item {
+    background-color: #7c7c7c49;
+}
+
 .list-of-contacts-item-header-1 {
     display: flex;
     align-items: center;

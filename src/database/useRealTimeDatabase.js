@@ -2,7 +2,7 @@ import { db } from "./firebase";
 import { onValue, ref } from "firebase/database";
 
 export const useRealTimeDatabase = () => {
-  return (collectionName) => {  
+  return (collectionName) => {
     const getAllNodes = async () => {
       const queryRef = ref(db, collectionName);
       let users = []
@@ -21,12 +21,8 @@ export const useRealTimeDatabase = () => {
       return users
     }
 
-    const listenMessages = () => {
-      
-    }
-
     return {
-      getAllNodes
+      getAllNodes,
     }
   }
 }
