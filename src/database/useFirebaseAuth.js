@@ -7,7 +7,6 @@ export const doRegisterUser = async (name, lastName, email, password) => {
   try {
     await createUserWithEmailAndPassword(auth, email, password);
     const user = auth.currentUser;
-    console.log(user);
 
     set(ref(db, `/users/${user.uid}`), {
       uid: user.uid,

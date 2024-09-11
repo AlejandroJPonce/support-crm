@@ -1,59 +1,13 @@
 import "../styles/Conversations.css";
-import Contact from './Contact'
+import Contact from "./Contact";
 import Conversation from "./Conversation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { dataBaseContext } from "../context/databaseContext";
+import UsersSelector from "../components/UsersSelector";
 
 export default function Conversations() {
-  let initUserList = [
-    {
-      id: 1,
-      name: "Alejandro",
-      lastName: "Ponce",
-      status: "Online",
-      imageUrl: "https://unavatar.io/microlink/microlink.io",
-      isSelected: false
-    },
-    {
-      id: 2,
-      name: "Alejandro",
-      lastName: "Ponce",
-      status: "Online",
-      imageUrl: "https://unavatar.io/microlink/microlink.io",
-      isSelected: false
-    },
-    {
-      id: 3,
-      name: "Alejandro",
-      lastName: "Ponce",
-      status: "Online",
-      imageUrl: "https://unavatar.io/microlink/microlink.io",
-      isSelected: false
-    },
-    {
-      id: 4,
-      name: "Alejandro",
-      lastName: "Ponce",
-      status: "Online",
-      imageUrl: "https://unavatar.io/microlink/microlink.io",
-      isSelected: false
-    },
-    {
-      id: 5,
-      name: "Alejandro",
-      lastName: "Ponce",
-      status: "Online",
-      imageUrl: "https://unavatar.io/microlink/microlink.io",
-      isSelected: false
-    },
-    {
-      id: 6,
-      name: "Alejandro",
-      lastName: "Ponce",
-      status: "Online",
-      imageUrl: "https://unavatar.io/microlink/microlink.io",
-      isSelected: false
-    },
-  ];
+  const { users } = useContext(dataBaseContext);
 
   var initChatInfo = {
     imageUrl: "https://unavatar.io/microlink/microlink.io",
@@ -63,8 +17,9 @@ export default function Conversations() {
     status: "Online",
   };
 
-  const [isActiveConversation, setIsActiveConversation] = useState(initChatInfo);
-  const [usersList] = useState(initUserList);
+  const [isActiveConversation, setIsActiveConversation] =
+    useState(initChatInfo);
+  const [usersList] = useState(users || []);
   const [isContactSelected, setContactSelected] = useState(false);
 
   const right_section_classes = isContactSelected ? "cvs-right-section" : "";
@@ -72,8 +27,8 @@ export default function Conversations() {
     ? "cvs-left-section cvs-left-section-limited"
     : "cvs-left-section";
 
-  function closeConversation () {
-    setContactSelected(false)
+  function closeConversation() {
+    setContactSelected(false);
   }
 
   function showConversations() {
@@ -95,22 +50,58 @@ export default function Conversations() {
     setIsActiveConversation(userInformation);
   }
 
+  function AlternativeMessageIfNotConversations () {
+      return (
+        <div>
+          <span> No se encontraron conversaciones ! </span>
+        </div>
+      )
+  }
+
+  useEffect(() => {
+    if (users) {
+      console.log({
+        message:
+          "estos son los usuarios que vinieron en la consulta a la base de datos",
+        usuarios: users,
+      });
+    }
+  }, [users]);
+
   return (
     <>
       <div className="cvs-box">
         <div className={left_section_classes}>
           <div className="cvs-list-header">
-            <strong> Chats </strong>
+            <span className="section-title"> Chats </span>
+            <div className="cvs-list-create-conversation">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <UsersSelector />
           </div>
           <div className="cvs-list-contacts">
-            {usersList.map((element) => (
-              <Contact
-                key={element.id}
-                details={element}
-                handleSetUser={setContact}
-                handleSelectThisContact={handleSelectThisContact}
-              />
-            ))}
+            {usersList != []
+              ? usersList.map((element) => (
+                  <Contact
+                    key={element.id}
+                    details={element}
+                    handleSetUser={setContact}
+                    handleSelectThisContact={handleSelectThisContact}
+                  />
+                ))
+              : AlternativeMessageIfNotConversations() }
           </div>
         </div>
         {showConversations()}

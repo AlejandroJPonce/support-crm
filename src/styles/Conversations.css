@@ -24,6 +24,29 @@
   max-width: 260px;
 }
 
+.cvs-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.section-title {
+  font-size: 20px;
+  font-family: 'Franklin Gothic Regular', 'Arial Narrow', Arial, sans-serif;
+}
+
+.cvs-list-create-conversation {
+  width: 20px;
+  height: 20px;
+}
+
+.cvs-list-create-conversation:hover {
+  cursor: pointer;
+  color: rgb(87, 139, 216);
+  transition: .5s ease color;
+}
+
 .cvs-list-contacts {
   width: 100%;
   display: flex;
