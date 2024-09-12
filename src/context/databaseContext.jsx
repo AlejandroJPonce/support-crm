@@ -7,8 +7,10 @@ import { v4 as uuidv4 } from "uuid";
 export const dataBaseContext = createContext();
 
 export default function DatabaseProvider({ children }) {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
+  const [ chatsList, setChatsList ] = useState([])
+  const [ usersChatsId, setUsersChatsId ] = useState([])
 
   const getAllNodes = async () => {
     let users = [];
@@ -31,9 +33,6 @@ export default function DatabaseProvider({ children }) {
   };
 
   const createRoom = async (sender_uid, receiver_uid) => {
-
-    setChatsList([])
-
     const room_id = uuidv4();
     set(ref(db, `ROOMS/${room_id}`), {
       createdAt: new Date(),
@@ -57,9 +56,6 @@ export default function DatabaseProvider({ children }) {
       });
     }
   };
-
-  const [ chatsList, setChatsList ] = useState([])
-  const [ usersChatsId, setUsersChatsId ] = useState([])
 
   const getChatList = async (receiver_id) => {
     const queryRef = ref(db, `users/${receiver_id}`);
