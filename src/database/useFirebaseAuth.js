@@ -1,5 +1,8 @@
 import { auth } from "./firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { db } from "./firebase";
 import { set, ref } from "firebase/database";
 
@@ -13,9 +16,9 @@ export const doRegisterUser = async (name, lastName, email, password) => {
       name: name,
       lastName: lastName,
       email: email,
-      status: 'Online',
-      imageUrl: 'https://unavatar.io/microlink/microlink.io'
-    })
+      status: "Online",
+      imageUrl: "https://unavatar.io/microlink/microlink.io",
+    });
 
     return user;
   } catch (error) {
@@ -26,11 +29,21 @@ export const doRegisterUser = async (name, lastName, email, password) => {
 export const doLoggedIn = async (email, password) => {
   try {
     const result = await signInWithEmailAndPassword(auth, email, password);
-    return result    
+    sessionStorage.setItem(
+      "activeUser",
+      JSON.stringify({
+        uid: result.user.uid,
+        name: result.user.name,
+        lastName: result.user.lastName,
+        role: result.user.role,
+        email: result.user.email,
+      })
+    );
+    return result;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const doSignOut = () => {
   return auth.signOut();

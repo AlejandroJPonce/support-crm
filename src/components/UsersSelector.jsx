@@ -1,23 +1,42 @@
+import { useContext, useEffect, useState } from "react";
 import "./componentsStyles/UsersSelector.css";
+import { dataBaseContext } from "../context/databaseContext";
+import CreatableSelect from "react-select/creatable";
 
 export default function UsersSelector() {
+  const { users, createRoom } = useContext(dataBaseContext);
+  const [usuarios, setUsuarios] = useState([]);
+  const [inputValue, setInputValue] = useState();
+
+  function handleShowUsers() {
+    let aux = []
+    users.forEach(element => {
+      aux.push({
+        value: element,
+        label: element.name + ' ' + element.lastName
+      })
+    });
+    setUsuarios(aux);
+  }
+
+  function selectedUser(event) {
+    const userActiveSession = JSON.parse(sessionStorage.getItem('activeUser'))
+    createRoom(userActiveSession.uid, event.value.uid)
+  }
+
+  useEffect(() => {
+    handleShowUsers();
+  }, [users]);
+
   return (
     <>
-      <div className="container">
-        <div className="dropdown">
-          <div className="select">
-            <span>Select Gender</span>
-            <i className="fa fa-chevron-left"></i>
-          </div>
-          <input type="hidden" name="gender" />
-          <ul className="dropdown-menu">
-            <li id="male">Male</li>
-            <li id="female">Female</li>
-          </ul>
-        </div>
-
-        <span className="msg"></span>
-      </div>
+      <CreatableSelect
+        value={inputValue}
+        className="selector"
+        isClearable
+        options={usuarios}
+        onChange={(e) => selectedUser(e)}
+      />
     </>
   );
 }
