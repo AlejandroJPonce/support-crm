@@ -1,6 +1,6 @@
 import "../styles/Conversation.css";
 
-export default function Conversation({handleCloseConversation}) {
+export default function Conversation({handleCloseConversation, activeContact}) {
   return (
     <>
       <div className="conv-box">
@@ -9,12 +9,12 @@ export default function Conversation({handleCloseConversation}) {
           <div className="conv-contact">
             <img
               className="conv-contact-image"
-              src="https://unavatar.io/microlink/microlink.io"
+              src={activeContact.imageUrl}
               alt=""
             />
             <div className="conv-contact-desc">
-              <strong>Alejandro Ponce</strong>
-              <span> Online </span>
+              <strong>{activeContact.name} {activeContact.lastName}</strong>
+              <span> {activeContact.status} </span>
             </div>
           </div>
 

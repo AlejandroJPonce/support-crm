@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { db, auth } from "../database/firebase";
 import { get, set, onValue, ref, push, child } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
@@ -8,9 +8,9 @@ export const dataBaseContext = createContext();
 
 export default function DatabaseProvider({ children }) {
   const [users, setUsers] = useState([]);
-  const [rooms, setRooms] = useState([]);
-  const [ chatsList, setChatsList ] = useState([])
-  const [ usersChatsId, setUsersChatsId ] = useState([])
+  const [userRooms, setUserRooms] = useState([]);
+  const [roomsInfo, setRoomsInfo] = useState([]);
+  const [activeChats, setActiveChats] = useState([]);
 
   const getAllNodes = async () => {
     let users = [];
@@ -57,56 +57,88 @@ export default function DatabaseProvider({ children }) {
     }
   };
 
-  const getChatList = async (receiver_id) => {
-    const queryRef = ref(db, `users/${receiver_id}`);
-    onValue(queryRef,  (snapshot) =>  {
-      setChatsList([])
-      if (snapshot.exists()) {
-        setChatsList(chatsList.push(snapshot.val()))
-      } else {
-        return;
-      }
-    });
+  function getUserRooms(user_uid) {
+    setUserRooms([]);
+    const dbRef = ref(db);
+    get(child(dbRef, `USER_ROOMS/${user_uid}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const response = snapshot.val();
+          const objeto = Object.values(response);
+
+          setUserRooms(objeto);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
-  const getRoomsInfo = async (room_id) => {
-    const queryRef = ref(db, `ROOMS/${room_id}`);
-    onValue(queryRef,  (snapshot) =>  {
-      if (snapshot.exists()) {
-        snapshot.forEach((isChild) => {
-          getChatList(isChild.val().receiver)
+  function getParticipants() {
+    var temp = [];
+    userRooms.reduce((_, current) => {
+      if (current === null || current === undefined) return;
+      //else
+      const dbRef = ref(db);
+      get(child(dbRef, `ROOMS/${current}`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            temp.push(snapshot.val().participants.receiver);
+            setRoomsInfo(temp);
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
         });
-      } else {
-        return;
-      }
-    });
+    }, []);
+  }
+
+  const haveRooms = () => {
+    const dbRef = ref(db);
+    var temp = [];
+    roomsInfo.reduce((_, context) => {
+      get(child(dbRef, `users/${context}`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            temp.push(snapshot.val())
+            setActiveChats(temp)
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }, []);
   };
 
-  const getUserRooms = async (user_id) => {
-    const queryRef = ref(db, `/USER_ROOMS/${user_id}`);
-    onValue(queryRef, (snapshot) => {
-      if (snapshot.exists()) {
-        snapshot.forEach((isChild) => {
-          getRoomsInfo(isChild.val())
-        });
-      }
-    });
-  };
+  const sendMessage = () => {
+    
+  }
 
   useEffect(() => {
     getAllNodes();
-
     onAuthStateChanged(auth, (user) => {
       if (user) {
         getUserRooms(user.uid);
-      } else {
-        return;
       }
     });
   }, []);
 
+  useEffect(() => {
+    getParticipants();
+  }, [userRooms]);
+
+  useEffect(() => {
+    haveRooms();
+  }, [roomsInfo]);
+
   return (
-    <dataBaseContext.Provider value={{ users, createRoom, chatsList }}>
+    <dataBaseContext.Provider value={{ users, createRoom, activeChats, sendMessage }}>
       {children}
     </dataBaseContext.Provider>
   );

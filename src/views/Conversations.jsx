@@ -1,26 +1,19 @@
 import "../styles/Conversations.css";
 import Contact from "./Contact";
 import Conversation from "./Conversation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useContext } from "react";
 import { dataBaseContext } from "../context/databaseContext";
 import UsersSelector from "../components/UsersSelector";
 
 export default function Conversations() {
 
-  var initChatInfo = {
-    imageUrl: "https://unavatar.io/microlink/microlink.io",
-    lastName: "Ponce",
-    name: "Alejandro",
-    role: "ADMIN",
-    status: "Online",
-  };
+  const { activeChats } = useContext(dataBaseContext)
 
-  const [isActiveConversation, setIsActiveConversation] =
-    useState(initChatInfo);
+  const [isActiveConversation, setIsActiveConversation] = useState({});
   const [isContactSelected, setContactSelected] = useState(false);
   const [showUsersListSelector, setShowUsersListSelector] = useState(false);
-  const [contactList, setContactList] = useState([]);
+  const [Rooms, setRooms] = useState([]);
 
   const right_section_classes = isContactSelected ? "cvs-right-section" : "";
   const left_section_classes = isContactSelected
@@ -29,16 +22,6 @@ export default function Conversations() {
 
   function closeConversation() {
     setContactSelected(false);
-  }
-
-  function showConversations() {
-    if (isContactSelected) {
-      return (
-        <div className={right_section_classes}>
-          <Conversation handleCloseConversation={closeConversation} />
-        </div>
-      );
-    }
   }
 
   function handleSelectThisContact() {
@@ -52,6 +35,16 @@ export default function Conversations() {
   function usersListSelector() {
     if (showUsersListSelector) {
       return <UsersSelector />;
+    }
+  }
+
+  function showConversations() {
+    if (isContactSelected) {
+      return (
+        <div className={right_section_classes}>
+          <Conversation handleCloseConversation={closeConversation} activeContact={isActiveConversation} />
+        </div>
+      );
     }
   }
 
@@ -83,7 +76,7 @@ export default function Conversations() {
 
           <div className="cvs-list-contacts">
             {
-            contactList.length > 0 ? contactList.map((element) => (
+            activeChats.length > 0 ? activeChats.map((element) => (
               <Contact
                 key={element.uid}
                 details={element}
