@@ -5,8 +5,6 @@ export default function Contact ({ details, handleSetUser, handleSelectThisConta
 
   const [userInfo, setUserInfo] = useState(details)
 
-  console.log(userInfo);
-
   function handleSaveContactInfo () {
 
     setUserInfo(userInfo)

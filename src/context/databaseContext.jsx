@@ -11,6 +11,7 @@ export default function DatabaseProvider({ children }) {
   const [userRooms, setUserRooms] = useState([]);
   const [roomsInfo, setRoomsInfo] = useState([]);
   const [activeChats, setActiveChats] = useState([]);
+  const [temporalRooms, setTemporalRooms] = useState();
 
   const getAllNodes = async () => {
     let users = [];
@@ -65,7 +66,6 @@ export default function DatabaseProvider({ children }) {
         if (snapshot.exists()) {
           const response = snapshot.val();
           const objeto = Object.values(response);
-
           setUserRooms(objeto);
         } else {
           console.log("No data available");
@@ -86,7 +86,7 @@ export default function DatabaseProvider({ children }) {
         .then((snapshot) => {
           if (snapshot.exists()) {
             temp.push(snapshot.val().participants.receiver);
-            setRoomsInfo(temp);
+            setRoomsInfo([...temp]);
           } else {
             console.log("No data available");
           }
@@ -104,8 +104,8 @@ export default function DatabaseProvider({ children }) {
       get(child(dbRef, `users/${context}`))
         .then((snapshot) => {
           if (snapshot.exists()) {
-            temp.push(snapshot.val())
-            setActiveChats(temp)
+            temp.push(snapshot.val());
+            setActiveChats(temp);
           } else {
             console.log("No data available");
           }
@@ -115,10 +115,6 @@ export default function DatabaseProvider({ children }) {
         });
     }, []);
   };
-
-  const sendMessage = () => {
-    
-  }
 
   useEffect(() => {
     getAllNodes();
@@ -135,10 +131,16 @@ export default function DatabaseProvider({ children }) {
 
   useEffect(() => {
     haveRooms();
+
+    if (roomsInfo) {
+      console.log("User rooms: ", userRooms);
+      console.log("rooms Info: ", roomsInfo);
+      console.log("Active rooms: ", activeChats);
+    }
   }, [roomsInfo]);
 
   return (
-    <dataBaseContext.Provider value={{ users, createRoom, activeChats, sendMessage }}>
+    <dataBaseContext.Provider value={{ users, createRoom, activeChats }}>
       {children}
     </dataBaseContext.Provider>
   );

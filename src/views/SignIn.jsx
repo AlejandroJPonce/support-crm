@@ -31,6 +31,10 @@ export default function SignIn() {
     }
   };
 
+  function logKey (event) {
+    console.log(event);
+  }
+
   return (
     <>
       <div className="signin-form-box">
@@ -48,6 +52,7 @@ export default function SignIn() {
           className="form-input"
           placeholder="Password"
           type="password"
+          
         ></input>
         <a href="/sign-up" className="form-route">
           Aun no haces parte del equipo ?
